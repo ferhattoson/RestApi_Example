@@ -1,33 +1,31 @@
-﻿namespace RestApi2.Repostory
+﻿using RestApi2.Entity;
+using RestApi2.Repostory.Abstract;
+
+namespace RestApi2.Repostory
 {
-    public class Reponstory<t> : IRepository<t> where t : BaseEntiity
+    public class Reponstory<T> : IRepository<T> where T : BaseEntity
 
     {
-        public void Add(t entity)
+        public T Get(int id)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(t entity)
+        public IQueryable<T> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<t> GetAll()
+        public T Insert(T entity)
         {
             throw new NotImplementedException();
         }
 
-        public t GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(t entity)
+        public T Update(T entity)
         {
             throw new NotImplementedException();
         }
     }
 
-    
+
 }
