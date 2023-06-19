@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RestApi2.connect;
 using RestApi2.model;
+using RestApi2.Services.Abstract;
 
 namespace RestApi2.Controllers
 {
@@ -9,54 +10,31 @@ namespace RestApi2.Controllers
     [ApiController]
     public class kisiController : ControllerBase
     {
-        private readonly MyAppDbContext _context;
+        // private readonly MyAppDbContext _context;
 
-        public kisiController(MyAppDbContext context)
-        {
-            _context = context;
-        }
-        [HttpGet]
-        public IActionResult Get()
-        {
-            var kisil= _context.Kisi.ToList();
-                if (kisil.Count == 0)
-            {
-                return NotFound("veri yok");
-            }
-                return Ok(kisil);
-        }
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            var kisil = _context.Kisi.Find(id);
-            if (kisil == null)
-            {
-                return NotFound($"{id } kişi detayı yok yok");
-            }
-            return Ok(kisil);
+        /* public kisiController(MyAppDbContext context)
+         {
+             _context = context;
+         }*/
+        private readonly IKisiServices _kisiServices;
 
+        public kisiController(IKisiServices kisiServices)
+        {
+            _kisiServices = kisiServices;
         }
         [HttpPost]
-        public IActionResult Post(kisi model)
+        public IActionResult Insert(kisi k)
         {
-            _context.Kisi.Add(model);
-            _context.SaveChanges();
-            return Ok("kişi yarattıldı");
+            var result = _kisiServices.InsertKisi(k);
+            return Ok(result);
         }
-        [HttpPut]
-        public IActionResult Put(kisi model)
+        [HttpGet]
+        public IActionResult GetAll()
         {
-            if (model == null)
-            {
-                return BadRequest("yok");
-
-            }
-            var kisil=_context.Kisi.Find(model.Id);
-            kisil.Ad=model.Ad;
-            kisil.Soyad=model.Soyad;
-            _context.SaveChanges();
-            return Ok("kayıt başarılı");
-                
+            var result = _kisiServices.GetAll();
+            return Ok(result);
         }
     }
+
 }
+
